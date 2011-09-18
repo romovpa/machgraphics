@@ -23,6 +23,7 @@ private:
 	void createActions();
 	void updateActions();
 	void createMenus();
+	void createToolkit();
 
 	QString imageFile;
 

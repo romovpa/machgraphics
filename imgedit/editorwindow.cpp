@@ -21,11 +21,7 @@ EditorWindow::EditorWindow(QWidget *parent) :
 	setCentralWidget(scrollArea);
 
 	// dock
-	toolkitWidget = new ToolkitWidget(this);
-
-	toolkitDock = new QDockWidget(tr("Toolkit"), this);
-	toolkitDock->setWidget(toolkitWidget);
-	addDockWidget(Qt::RightDockWidgetArea, toolkitDock);
+	createToolkit();
 
 	// menu
 	createActions();
@@ -39,7 +35,7 @@ EditorWindow::~EditorWindow()
 void EditorWindow::openImage()
 {
 	QString fileName = QFileDialog::getOpenFileName(this,
-		tr("Open Image"), QDir::homePath());
+		tr("Open Image"), QDir::homePath(), tr("Images (*.png *.xpm *.jpg *.bmp)"));
 	if (!fileName.isEmpty()) {
 		QImage image(fileName);
 		if (image.isNull()) {
@@ -64,7 +60,8 @@ void EditorWindow::saveImage()
 void EditorWindow::saveImageAs()
 {
 	QString fileName = QFileDialog::getSaveFileName(this,
-		tr("Save Image"), QDir::homePath());
+		tr("Save Image"), QDir::homePath(),
+		tr("JPEG image (*.jpg);;Portable Network Graphics (*.png);;Windows Bitmap (*.bmp);;X Pixmap (*.xpm)"));
 	if (!fileName.isEmpty())
 		imageFile = fileName;
 	saveImage();
@@ -92,7 +89,6 @@ void EditorWindow::createActions()
 	toggleToolkitAct->setCheckable(true);
 	connect(toggleToolkitAct, SIGNAL(toggled(bool)), toolkitDock, SLOT(setShown(bool)));
 	connect(toolkitDock, SIGNAL(visibilityChanged(bool)), toggleToolkitAct, SLOT(setChecked(bool)));
-	toggleToolkitAct->setChecked(true);
 }
 
 void EditorWindow::updateActions()
@@ -113,4 +109,12 @@ void EditorWindow::createMenus()
 	windowMenu = new QMenu(tr("&Window"), this);
 	windowMenu->addAction(toggleToolkitAct);
 	menuBar()->addMenu(windowMenu);
+}
+
+void EditorWindow::createToolkit()
+{
+	toolkitWidget = new ToolkitWidget(this);
+	toolkitDock = new QDockWidget(tr("Toolkit"), this);
+	toolkitDock->setWidget(toolkitWidget);
+	addDockWidget(Qt::RightDockWidgetArea, toolkitDock);
 }
