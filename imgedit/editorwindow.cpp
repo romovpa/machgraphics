@@ -5,7 +5,11 @@
 EditorWindow::EditorWindow(QWidget *parent) :
 	QMainWindow(parent)
 {
-	imageWidget = new ImageWidget;
+	setWindowTitle( tr("Image Editor") );
+	resize(600, 400);
+
+	// window content
+	imageWidget = new ImageWidget(this);
 	imageWidget->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
 	imageWidget->setBackgroundRole(QPalette::Base);
 
@@ -16,11 +20,16 @@ EditorWindow::EditorWindow(QWidget *parent) :
 
 	setCentralWidget(scrollArea);
 
+	// dock
+	toolkitWidget = new ToolkitWidget(this);
+
+	toolkitDock = new QDockWidget(tr("Toolkit"), this);
+	toolkitDock->setWidget(toolkitWidget);
+	addDockWidget(Qt::RightDockWidgetArea, toolkitDock);
+
+	// menu
 	createActions();
 	createMenus();
-
-	setWindowTitle( tr("Image Editor") );
-	resize(600, 400);
 }
 
 EditorWindow::~EditorWindow()
@@ -78,6 +87,12 @@ void EditorWindow::createActions()
 	quitAct = new QAction(tr("Quit"), this);
 	quitAct->setShortcut(QKeySequence::Quit);
 	connect(quitAct, SIGNAL(triggered()), this, SLOT(close()));
+
+	toggleToolkitAct = new QAction(tr("Toolkit"), this);
+	toggleToolkitAct->setCheckable(true);
+	connect(toggleToolkitAct, SIGNAL(toggled(bool)), toolkitDock, SLOT(setShown(bool)));
+	connect(toolkitDock, SIGNAL(visibilityChanged(bool)), toggleToolkitAct, SLOT(setChecked(bool)));
+	toggleToolkitAct->setChecked(true);
 }
 
 void EditorWindow::updateActions()
@@ -93,6 +108,9 @@ void EditorWindow::createMenus()
 	fileMenu->addAction(saveAsAct);
 	fileMenu->addSeparator();
 	fileMenu->addAction(quitAct);
-
 	menuBar()->addMenu(fileMenu);
+
+	windowMenu = new QMenu(tr("&Window"), this);
+	windowMenu->addAction(toggleToolkitAct);
+	menuBar()->addMenu(windowMenu);
 }

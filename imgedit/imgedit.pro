@@ -12,12 +12,30 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         editorwindow.cpp \
-    imagewidget.cpp
+    imagewidget.cpp \
+    toolkitwidget.cpp
 
 HEADERS  += editorwindow.h \
-    imagewidget.h
+    imagewidget.h \
+    toolkitwidget.h
 
-FORMS    +=
+FORMS    += \
+    toolkitwidget.ui
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

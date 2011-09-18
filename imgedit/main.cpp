@@ -1,5 +1,6 @@
-#include <QtGui/QApplication>
 #include "editorwindow.h"
+
+#include <QtGui/QApplication>
 
 int main(int argc, char *argv[])
 {

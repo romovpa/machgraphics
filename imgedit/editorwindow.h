@@ -2,6 +2,7 @@
 #define EDITORWINDOW_H
 
 #include "imagewidget.h"
+#include "toolkitwidget.h"
 
 #include <QtGui>
 
@@ -27,14 +28,18 @@ private:
 
 	QScrollArea *scrollArea;
 	ImageWidget *imageWidget;
-	QDockWidget *dock;
+
+	QDockWidget *toolkitDock;
+	ToolkitWidget *toolkitWidget;
 
 	QAction *openAct;
 	QAction *saveAct;
 	QAction *saveAsAct;
 	QAction *quitAct;
+	QAction *toggleToolkitAct;
 
 	QMenu *fileMenu;
+	QMenu *windowMenu;
 };
 
 #endif // EDITORWINDOW_H
