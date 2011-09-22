@@ -14,6 +14,12 @@ public:
     explicit EditorWindow(QWidget *parent = 0);
     ~EditorWindow();
 
+	QImage getImage();
+	QRect getRect();
+
+public slots:
+	void changeImage(QImage);
+
 private slots:
 	void openImage();
 	void saveImage();

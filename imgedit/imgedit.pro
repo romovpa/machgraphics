@@ -13,14 +13,36 @@ TEMPLATE = app
 SOURCES += main.cpp\
         editorwindow.cpp \
     imagewidget.cpp \
-    toolkitwidget.cpp
+    toolkitwidget.cpp \
+    imageprocessor.cpp \
+    noiseprocessor.cpp
 
 HEADERS  += editorwindow.h \
     imagewidget.h \
-    toolkitwidget.h
+    toolkitwidget.h \
+    imageprocessor.h \
+    noiseprocessor.h
 
 FORMS    += \
     toolkitwidget.ui
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

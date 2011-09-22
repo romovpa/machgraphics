@@ -6,7 +6,7 @@ EditorWindow::EditorWindow(QWidget *parent) :
 	QMainWindow(parent)
 {
 	setWindowTitle( tr("Image Editor") );
-	resize(600, 400);
+	resize(800, 500);
 
 	// window content
 	imageWidget = new ImageWidget(this);
@@ -30,6 +30,22 @@ EditorWindow::EditorWindow(QWidget *parent) :
 
 EditorWindow::~EditorWindow()
 {
+}
+
+QImage EditorWindow::getImage()
+{
+	return imageWidget->getImage();
+}
+
+QRect EditorWindow::getRect()
+{
+	return imageWidget->getRect();
+}
+
+void EditorWindow::changeImage(QImage newImage)
+{
+	imageWidget->setImage(newImage);
+	// TODO: implement undo list
 }
 
 void EditorWindow::openImage()
@@ -116,5 +132,6 @@ void EditorWindow::createToolkit()
 	toolkitWidget = new ToolkitWidget(this);
 	toolkitDock = new QDockWidget(tr("Toolkit"), this);
 	toolkitDock->setWidget(toolkitWidget);
+	toolkitDock->setMinimumWidth(250);
 	addDockWidget(Qt::RightDockWidgetArea, toolkitDock);
 }

@@ -15,6 +15,12 @@ const QImage& ImageWidget::getImage()
 	return image;
 }
 
+QRect ImageWidget::getRect()
+{
+	return image.rect();
+	// TODO: implement rectangle selection
+}
+
 float ImageWidget::getScale()
 {
 	return scaleFactor * currentStepScaleFactor;

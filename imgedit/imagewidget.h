@@ -8,7 +8,9 @@ class ImageWidget : public QWidget
     Q_OBJECT
 public:
     explicit ImageWidget(QWidget *parent = 0);
+
 	const QImage& getImage();
+	QRect getRect();
 	float getScale();
 
 signals:
