@@ -17,7 +17,9 @@ SOURCES += main.cpp\
     imageprocessor.cpp \
     histogramprocessor.cpp \
     geometryprocessor.cpp \
-    geometrydialog.cpp
+    geometrydialog.cpp \
+    filterprocessor.cpp \
+    filterdialog.cpp
 
 HEADERS  += editorwindow.h \
     imagewidget.h \
@@ -25,10 +27,18 @@ HEADERS  += editorwindow.h \
     imageprocessor.h \
     histogramprocessor.h \
     geometryprocessor.h \
-    geometrydialog.h
+    geometrydialog.h \
+    filterprocessor.h \
+    filterdialog.h
 
 FORMS    += \
-    geometrydialog.ui
+    geometrydialog.ui \
+    filterdialog.ui
+
+
+
+
+
 
 
 

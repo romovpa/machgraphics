@@ -24,6 +24,7 @@ private slots:
 	void doAutoLevels();
 	void doWhiteBalance();
 	void doGeometryTransform();
+	void doFilter();
 
 private:
 	void createActions();

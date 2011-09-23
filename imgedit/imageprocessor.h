@@ -28,4 +28,6 @@ protected:
 
 };
 
+int double2int(double x);
+
 #endif // IMAGEPROCESSOR_H

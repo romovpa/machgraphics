@@ -1,9 +1,11 @@
 #include "editorwindow.h"
 #include "geometrydialog.h"
+#include "filterdialog.h"
 
 #include "imageprocessor.h"
 #include "histogramprocessor.h"
 #include "geometryprocessor.h"
+#include "filterprocessor.h"
 
 #include <QtGui>
 
@@ -104,6 +106,10 @@ void EditorWindow::createActions()
 	geometryAct = new QAction(tr("Scale/Rotate"), this);
 	geometryAct->setToolTip(tr("Scale and rotate image relative to the center"));
 	connect(geometryAct, SIGNAL(triggered()), this, SLOT(doGeometryTransform()));
+
+	filterAct = new QAction(tr("Filter..."), this);
+	filterAct->setToolTip(tr("Open filtration dialog"));
+	connect(filterAct, SIGNAL(triggered()), this, SLOT(doFilter()));
 }
 
 void EditorWindow::updateActions()
@@ -131,6 +137,7 @@ void EditorWindow::createMenus()
 	procMenu->addAction(whiteBalanceAct);
 	procMenu->addSeparator();
 	procMenu->addAction(geometryAct);
+	procMenu->addAction(filterAct);
 	menuBar()->addMenu(procMenu);
 }
 
@@ -185,4 +192,15 @@ void EditorWindow::doGeometryTransform()
 	}
 }
 
-
+void EditorWindow::doFilter()
+{
+	FilterDialog dlg;
+	int res = dlg.exec();
+	if (res == QDialog::Accepted) {
+		FilterProcessor processor(imageWidget->getImage(), imageWidget->getRect(), this);
+		processor.setType(dlg.getType());
+		processor.setKernelSize(dlg.getKernelSize());
+		processor.setSigma(dlg.getSigma());
+		runProcessor(processor);
+	}
+}

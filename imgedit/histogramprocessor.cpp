@@ -7,13 +7,6 @@ HistogramProcessor::HistogramProcessor(const QImage &image, QRect rect, QObject 
 {
 }
 
-int double2int(double x)
-{
-	if (x < 0) x = 0;
-	if (x > 255) x = 255;
-	return (int)(x+0.5);
-}
-
 void HistogramProcessor::setType(HistogramTransform type)
 {
 	this->type = type;
