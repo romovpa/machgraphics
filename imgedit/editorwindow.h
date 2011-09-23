@@ -40,7 +40,14 @@ private:
 	QAction *saveAsAct;
 	QAction *quitAct;
 
-	QAction *autoContrastAct;
+	QAction *autoContrastAct; // Linear stretch on L (luma)
+	QAction *rgbStretchAct;   // Linear stretch on RGB
+	QAction *whiteBalanceAct; // White balancing (gray world)
+	QAction *filterAct;       // Open filtration dialog
+							   //    support: gauss (separable), sharpeness, median, arbitrary linear
+	QAction *affineAct;       // Open affine transform dialog
+	QAction *wavesAct;        // Waves effect
+	QAction *glassAct;        // Glass effect
 
 	QMenu *fileMenu;
 	QMenu *procMenu;
