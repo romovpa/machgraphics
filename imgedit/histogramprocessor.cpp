@@ -7,6 +7,13 @@ HistogramProcessor::HistogramProcessor(const QImage &image, QRect rect, QObject 
 {
 }
 
+int double2int(double x)
+{
+	if (x < 0) x = 0;
+	if (x > 255) x = 255;
+	return (int)(x+0.5);
+}
+
 void HistogramProcessor::setType(HistogramTransform type)
 {
 	this->type = type;
@@ -20,6 +27,9 @@ void HistogramProcessor::process()
 			break;
 		case LUMA_LINEAR_STRETCH:
 			lumaStretch();
+			break;
+		case GREYWORLD_WHITE_BALANCE:
+			greyworld();
 			break;
 		default:
 			qWarning() << "Invalid histogram transformation: " << type;
@@ -95,6 +105,31 @@ void HistogramProcessor::lumaStretch()
 			if (b > 255) b = 255;
 
 			line[j] = qRgb((int)(r+0.5), (int)(g+0.5), (int)(b+0.5));
+		}
+	}
+}
+
+void HistogramProcessor::greyworld()
+{
+	double meanR = 0, meanG = 0, meanB = 0;
+	// computing mean
+	for (int i = rect.top(); i <= rect.bottom(); ++i) {
+		QRgb *line = (QRgb*)image.scanLine(i);
+		for (int j = rect.left(); j <= rect.right(); ++j) {
+			meanR += qRed(line[j]);
+			meanG += qGreen(line[j]);
+			meanB += qBlue(line[j]);
+		}
+	}
+	int s = rect.width()*rect.height();
+	meanR /= s, meanG /= s, meanB /= s;
+	// making changes
+	double avg = (meanR + meanG + meanB) / 3;
+	for (int i = rect.top(); i <= rect.bottom(); ++i) {
+		QRgb *line = (QRgb*)image.scanLine(i);
+		for (int j = rect.left(); j <= rect.right(); ++j) {
+			double r = qRed(line[j]), g = qGreen(line[j]), b = qBlue(line[j]);
+			line[j] = qRgb(double2int(r*avg/meanR), double2int(g*avg/meanG), double2int(b*avg/meanB));
 		}
 	}
 }

@@ -11,7 +11,8 @@ public:
 
 	enum HistogramTransform {
 		RGB_LINEAR_STRETCH,
-		LUMA_LINEAR_STRETCH
+		LUMA_LINEAR_STRETCH,
+		GREYWORLD_WHITE_BALANCE
 	};
 
 	void setType(HistogramTransform type);
@@ -24,6 +25,7 @@ private:
 
 	void rgbStretch();
 	void lumaStretch();
+	void greyworld();
 };
 
 #endif // HISTOGRAMPROCESSOR_H

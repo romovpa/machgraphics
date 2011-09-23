@@ -97,6 +97,10 @@ void EditorWindow::createActions()
 	autoLevelsAct->setToolTip(tr("Apply channel-wise RGB histogram stretching"));
 	connect(autoLevelsAct, SIGNAL(triggered()), this, SLOT(doAutoLevels()));
 
+	whiteBalanceAct = new QAction(tr("Correct White Balance"), this);
+	whiteBalanceAct->setToolTip(tr("Apply white balance correction using greyworld model"));
+	connect(whiteBalanceAct, SIGNAL(triggered()), this, SLOT(doWhiteBalance()));
+
 	geometryAct = new QAction(tr("Scale/Rotate"), this);
 	geometryAct->setToolTip(tr("Scale and rotate image relative to the center"));
 	connect(geometryAct, SIGNAL(triggered()), this, SLOT(doGeometryTransform()));
@@ -107,6 +111,7 @@ void EditorWindow::updateActions()
 	bool hasImg = imageWidget->hasImage();
 	autoContrastAct->setEnabled(hasImg);
 	autoLevelsAct->setEnabled(hasImg);
+	whiteBalanceAct->setEnabled(hasImg);
 	geometryAct->setEnabled(hasImg);
 }
 
@@ -123,6 +128,8 @@ void EditorWindow::createMenus()
 	procMenu = new QMenu(tr("&Processing"), this);
 	procMenu->addAction(autoContrastAct);
 	procMenu->addAction(autoLevelsAct);
+	procMenu->addAction(whiteBalanceAct);
+	procMenu->addSeparator();
 	procMenu->addAction(geometryAct);
 	menuBar()->addMenu(procMenu);
 }
@@ -154,6 +161,13 @@ void EditorWindow::doAutoLevels()
 {
 	HistogramProcessor processor(imageWidget->getImage(), imageWidget->getRect(), this);
 	processor.setType(HistogramProcessor::RGB_LINEAR_STRETCH);
+	runProcessor(processor);
+}
+
+void EditorWindow::doWhiteBalance()
+{
+	HistogramProcessor processor(imageWidget->getImage(), imageWidget->getRect(), this);
+	processor.setType(HistogramProcessor::GREYWORLD_WHITE_BALANCE);
 	runProcessor(processor);
 }
 

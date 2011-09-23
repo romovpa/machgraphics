@@ -22,6 +22,7 @@ private slots:
 
 	void doAutoContrast();
 	void doAutoLevels();
+	void doWhiteBalance();
 	void doGeometryTransform();
 
 private:
