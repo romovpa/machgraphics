@@ -1,4 +1,5 @@
 #include "editorwindow.h"
+#include "imageprocessor.h"
 
 #include <QtGui>
 
@@ -18,9 +19,12 @@ EditorWindow::EditorWindow(QWidget *parent) :
 
 	createActions();
 	createMenus();
+	updateActions();
+
+	progressDialog = new ProgressDialog(this);
 
 	setWindowTitle( tr("Image Editor") );
-	resize(600, 400);
+	resize(600, 500);
 }
 
 EditorWindow::~EditorWindow()
@@ -40,6 +44,7 @@ void EditorWindow::openImage()
 		}
 		imageFile = fileName;
 		imageWidget->setImage(image);
+		updateActions();
 	}
 }
 
@@ -78,11 +83,14 @@ void EditorWindow::createActions()
 	quitAct = new QAction(tr("Quit"), this);
 	quitAct->setShortcut(QKeySequence::Quit);
 	connect(quitAct, SIGNAL(triggered()), this, SLOT(close()));
+
+	autoContrastAct = new QAction(tr("Auto Contrast"), this);
+	connect(autoContrastAct, SIGNAL(triggered()), this, SLOT(doAutoContrast()));
 }
 
 void EditorWindow::updateActions()
 {
-
+	autoContrastAct->setEnabled(imageWidget->hasImage());
 }
 
 void EditorWindow::createMenus()
@@ -93,6 +101,31 @@ void EditorWindow::createMenus()
 	fileMenu->addAction(saveAsAct);
 	fileMenu->addSeparator();
 	fileMenu->addAction(quitAct);
-
 	menuBar()->addMenu(fileMenu);
+
+	procMenu = new QMenu(tr("&Processing"), this);
+	procMenu->addAction(autoContrastAct);
+	menuBar()->addMenu(procMenu);
+}
+
+bool EditorWindow::runProcessor(ImageProcessor *processor)
+{
+	connect(processor, SIGNAL(progressChanged(double)), progressDialog, SLOT(setProgress(double)));
+	connect(progressDialog, SIGNAL(cancelRequested()), processor, SLOT(terminate()));
+	connect(processor, SIGNAL(terminated()), progressDialog, SLOT(reject()));
+	connect(processor, SIGNAL(processFinished()), progressDialog, SLOT(accept()));
+	processor->start();
+	if (progressDialog->exec() == QDialog::Accepted) {
+		imageWidget->setImage(processor->getImage());
+		return true;
+	}
+	else
+		return false;
+}
+
+void EditorWindow::doAutoContrast()
+{
+	ImageProcessor *processor = new ImageProcessor(imageWidget->getImage(), imageWidget->getRect(), this);
+	runProcessor(processor);
+	delete processor;
 }

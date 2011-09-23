@@ -9,7 +9,9 @@ class ImageWidget : public QWidget
 public:
     explicit ImageWidget(QWidget *parent = 0);
 	const QImage& getImage();
+	bool hasImage();
 	float getScale();
+	QRect getRect();
 
 signals:
 	void scaleChanged(float);
@@ -21,6 +23,9 @@ public slots:
 protected:
 	bool event(QEvent *);
 	void paintEvent(QPaintEvent *);
+	void mousePressEvent(QMouseEvent *);
+	void mouseMoveEvent(QMouseEvent *);
+	void mouseReleaseEvent(QMouseEvent *);
 
 private:
 	void updateSize();
@@ -29,9 +34,14 @@ private:
 	void pinchTriggered(QPinchGesture *);
 
 	QImage image;
+	QRect rect;
 
 	float scaleFactor;
 	float currentStepScaleFactor;
+
+	bool selectingRect;
+	QPoint selectingPoint;
+	QPoint getImagePos(const QPoint &);
 };
 
 #endif // IMAGEWIDGET_H

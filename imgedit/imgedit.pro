@@ -12,12 +12,22 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         editorwindow.cpp \
-    imagewidget.cpp
+    imagewidget.cpp \
+    progressdialog.cpp \
+    imageprocessor.cpp
 
 HEADERS  += editorwindow.h \
-    imagewidget.h
+    imagewidget.h \
+    progressdialog.h \
+    imageprocessor.h
 
 FORMS    +=
+
+
+
+
+
+
 
 
 

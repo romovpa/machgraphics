@@ -15,6 +15,11 @@ const QImage& ImageWidget::getImage()
 	return image;
 }
 
+QRect ImageWidget::getRect()
+{
+	return rect;
+}
+
 float ImageWidget::getScale()
 {
 	return scaleFactor * currentStepScaleFactor;
@@ -25,6 +30,11 @@ void ImageWidget::setImage(const QImage &newImage)
 	image = newImage;
 	updateSize();
 	update();
+}
+
+bool ImageWidget::hasImage()
+{
+	return !image.isNull();
 }
 
 void ImageWidget::setScale(float scale)
@@ -40,6 +50,11 @@ void ImageWidget::updateSize()
 	setFixedSize(w, h);
 }
 
+QPoint ImageWidget::getImagePos(const QPoint &p)
+{
+	return QPoint(p.x()/getScale(), p.y()/getScale());
+}
+
 bool ImageWidget::event(QEvent *event)
 {
 	if (event->type() == QEvent::Gesture)
@@ -53,7 +68,47 @@ void ImageWidget::paintEvent(QPaintEvent *)
 		QPainter p(this);
 		p.scale(getScale(), getScale());
 		p.drawImage(0, 0, image);
+		if (rect.isValid()) {
+			p.setPen(Qt::SolidLine);
+			p.setPen(Qt::red);
+			p.drawRect(rect.left(), rect.top(), rect.width()-1, rect.height()-1);
+		}
 	}
+}
+
+void ImageWidget::mousePressEvent(QMouseEvent *event)
+{
+	selectingRect = true;
+	selectingPoint = getImagePos(event->pos());
+	rect.setSize(QSize(0, 0));
+	update();
+}
+
+#define min(x,y) ((x)<(y)?(x):(y))
+#define max(x,y) ((x)>(y)?(x):(y))
+void ImageWidget::mouseMoveEvent(QMouseEvent *event)
+{
+	if (selectingRect) {
+		QPoint p1 = selectingPoint, p2 = getImagePos(event->pos());
+		// set selecton rect
+		rect.setCoords(min(p1.x(), p2.x()),
+					   min(p1.y(), p2.y()),
+					   max(p1.x(), p2.x()),
+					   max(p1.y(), p2.y()));
+		// correcting rect
+		rect.setBottom( min(image.height(), rect.bottom()) );
+		rect.setTop( max(0, rect.top()) );
+		rect.setLeft( max(0, rect.left()) );
+		rect.setRight( min(image.width(), rect.right()) );
+
+		update();
+	}
+}
+
+void ImageWidget::mouseReleaseEvent(QMouseEvent *event)
+{
+	selectingRect = false;
+	update();
 }
 
 bool ImageWidget::gestureEvent(QGestureEvent *event)
