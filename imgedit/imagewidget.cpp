@@ -31,6 +31,7 @@ float ImageWidget::getScale()
 void ImageWidget::setImage(const QImage &newImage)
 {
 	image = newImage;
+	rect.setSize(QSize(0, 0));
 	updateSize();
 	update();
 }

@@ -15,15 +15,29 @@ SOURCES += main.cpp\
     imagewidget.cpp \
     progressdialog.cpp \
     imageprocessor.cpp \
-    histogramprocessor.cpp
+    histogramprocessor.cpp \
+    geometryprocessor.cpp \
+    geometrydialog.cpp
 
 HEADERS  += editorwindow.h \
     imagewidget.h \
     progressdialog.h \
     imageprocessor.h \
-    histogramprocessor.h
+    histogramprocessor.h \
+    geometryprocessor.h \
+    geometrydialog.h
 
-FORMS    +=
+FORMS    += \
+    geometrydialog.ui
+
+
+
+
+
+
+
+
+
 
 
 

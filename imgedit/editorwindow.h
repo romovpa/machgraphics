@@ -22,13 +22,14 @@ private slots:
 
 	void doAutoContrast();
 	void doAutoLevels();
+	void doGeometryTransform();
 
 private:
 	void createActions();
 	void updateActions();
 	void createMenus();
 
-	bool runProcessor(ImageProcessor *processor);
+	bool runProcessor(ImageProcessor &processor);
 
 	QString imageFile;
 
@@ -46,7 +47,7 @@ private:
 	QAction *whiteBalanceAct; // White balancing (grayworld)
 	QAction *filterAct;       // Open filtration dialog
 							   //    support: gauss (separable), sharpeness, median, arbitrary linear
-	QAction *affineAct;       // Open affine transform dialog
+	QAction *geometryAct;     // Open geometry transform dialog
 	QAction *wavesAct;        // Waves effect
 	QAction *glassAct;        // Glass effect
 

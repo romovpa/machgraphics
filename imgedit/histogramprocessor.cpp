@@ -14,7 +14,6 @@ void HistogramProcessor::setType(HistogramTransform type)
 
 void HistogramProcessor::process()
 {
-	qDebug() << "process" << type;
 	switch (type) {
 		case RGB_LINEAR_STRETCH:
 			rgbStretch();
@@ -32,9 +31,9 @@ void HistogramProcessor::rgbStretch()
 	double minR = 255, minG = 255, minB = 255;
 	double maxR = 0, maxG = 0, maxB = 0;
 	// finding min and max
-	for (int i = rect.top(); i <= rect.bottom(); i++) {
+	for (int i = rect.top(); i <= rect.bottom(); ++i) {
 		QRgb *line = (QRgb*)image.scanLine(i);
-		for (int j = rect.left(); j <= rect.right(); j++) {
+		for (int j = rect.left(); j <= rect.right(); ++j) {
 			QRgb cur = line[j];
 			double r = qRed(cur), g = qGreen(cur), b = qBlue(cur);
 			if (r < minR) minR = r;
@@ -65,9 +64,9 @@ void HistogramProcessor::lumaStretch()
 {
 	double minY = 255, maxY = 0;
 	// finding min and max
-	for (int i = rect.top(); i <= rect.bottom(); i++) {
+	for (int i = rect.top(); i <= rect.bottom(); ++i) {
 		QRgb *line = (QRgb*)image.scanLine(i);
-		for (int j = rect.left(); j <= rect.right(); j++) {
+		for (int j = rect.left(); j <= rect.right(); ++j) {
 			QRgb cur = line[j];
 			double r = qRed(cur), g = qGreen(cur), b = qBlue(cur);
 			double y = 0.2125*r + 0.7154*g + 0.0721*b;
@@ -78,9 +77,9 @@ void HistogramProcessor::lumaStretch()
 	// fixing zero-interval stretching
 	if (maxY <= minY) minY = 0, maxY = 255;
 	// stretching
-	for (int i = rect.top(); i <= rect.bottom(); i++) {
+	for (int i = rect.top(); i <= rect.bottom(); ++i) {
 		QRgb *line = (QRgb*)image.scanLine(i);
-		for (int j = rect.left(); j <= rect.right(); j++) {
+		for (int j = rect.left(); j <= rect.right(); ++j) {
 			QRgb cur = line[j];
 			double r = qRed(cur), g = qGreen(cur), b = qBlue(cur);
 			double y = 0.2125*r + 0.7154*g + 0.0721*b;

@@ -1,7 +1,9 @@
 #include "editorwindow.h"
+#include "geometrydialog.h"
 
 #include "imageprocessor.h"
 #include "histogramprocessor.h"
+#include "geometryprocessor.h"
 
 #include <QtGui>
 
@@ -44,6 +46,7 @@ void EditorWindow::openImage()
 				tr("Cannot load %1.").arg(fileName));
 			return;
 		}
+		image = image.convertToFormat(QImage::Format_RGB32);
 		imageFile = fileName;
 		imageWidget->setImage(image);
 		updateActions();
@@ -93,11 +96,18 @@ void EditorWindow::createActions()
 	autoLevelsAct = new QAction(tr("Auto Levels"), this);
 	autoLevelsAct->setToolTip(tr("Apply channel-wise RGB histogram stretching"));
 	connect(autoLevelsAct, SIGNAL(triggered()), this, SLOT(doAutoLevels()));
+
+	geometryAct = new QAction(tr("Scale/Rotate"), this);
+	geometryAct->setToolTip(tr("Scale and rotate image relative to the center"));
+	connect(geometryAct, SIGNAL(triggered()), this, SLOT(doGeometryTransform()));
 }
 
 void EditorWindow::updateActions()
 {
-	autoContrastAct->setEnabled(imageWidget->hasImage());
+	bool hasImg = imageWidget->hasImage();
+	autoContrastAct->setEnabled(hasImg);
+	autoLevelsAct->setEnabled(hasImg);
+	geometryAct->setEnabled(hasImg);
 }
 
 void EditorWindow::createMenus()
@@ -113,19 +123,20 @@ void EditorWindow::createMenus()
 	procMenu = new QMenu(tr("&Processing"), this);
 	procMenu->addAction(autoContrastAct);
 	procMenu->addAction(autoLevelsAct);
+	procMenu->addAction(geometryAct);
 	menuBar()->addMenu(procMenu);
 }
 
-bool EditorWindow::runProcessor(ImageProcessor *processor)
+bool EditorWindow::runProcessor(ImageProcessor &processor)
 {
 	// TODO: show progress window after 0.5 seconds the processor started
-	connect(processor, SIGNAL(progressChanged(double)), progressDialog, SLOT(setProgress(double)));
-	connect(progressDialog, SIGNAL(cancelRequested()), processor, SLOT(terminate()));
-	connect(processor, SIGNAL(terminated()), progressDialog, SLOT(reject()));
-	connect(processor, SIGNAL(processFinished()), progressDialog, SLOT(accept()));
-	processor->start();
+	connect(&processor, SIGNAL(progressChanged(double)), progressDialog, SLOT(setProgress(double)));
+	connect(progressDialog, SIGNAL(cancelRequested()), &processor, SLOT(terminate()));
+	connect(&processor, SIGNAL(terminated()), progressDialog, SLOT(reject()));
+	connect(&processor, SIGNAL(processFinished()), progressDialog, SLOT(accept()));
+	processor.start();
 	if (progressDialog->exec() == QDialog::Accepted) {
-		imageWidget->setImage(processor->getImage());
+		imageWidget->setImage(processor.getImage());
 		return true;
 	}
 	else
@@ -134,18 +145,30 @@ bool EditorWindow::runProcessor(ImageProcessor *processor)
 
 void EditorWindow::doAutoContrast()
 {
-	HistogramProcessor *processor =
-			new HistogramProcessor(imageWidget->getImage(), imageWidget->getRect(), this);
-	processor->setType(HistogramProcessor::LUMA_LINEAR_STRETCH);
+	HistogramProcessor processor(imageWidget->getImage(), imageWidget->getRect(), this);
+	processor.setType(HistogramProcessor::LUMA_LINEAR_STRETCH);
 	runProcessor(processor);
-	delete processor;
 }
 
 void EditorWindow::doAutoLevels()
 {
-	HistogramProcessor *processor =
-			new HistogramProcessor(imageWidget->getImage(), imageWidget->getRect(), this);
-	processor->setType(HistogramProcessor::RGB_LINEAR_STRETCH);
+	HistogramProcessor processor(imageWidget->getImage(), imageWidget->getRect(), this);
+	processor.setType(HistogramProcessor::RGB_LINEAR_STRETCH);
 	runProcessor(processor);
-	delete processor;
 }
+
+void EditorWindow::doGeometryTransform()
+{
+	GeometryDialog dlg;
+	int res = dlg.exec();
+	if (res == QDialog::Accepted) {
+		GeometryProcessor processor(imageWidget->getImage(), imageWidget->getRect(), this);
+		processor.setScale(dlg.getScale());
+		processor.setAngle(dlg.getAngle());
+		processor.setFillStyle(dlg.getFillStyle());
+		processor.setFillColor(dlg.getFillColor());
+		runProcessor(processor);
+	}
+}
+
+

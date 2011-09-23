@@ -3,6 +3,7 @@
 
 #include <QThread>
 #include <QImage>
+#include <QRect>
 
 class ImageProcessor : public QThread
 {
