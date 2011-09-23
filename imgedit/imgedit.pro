@@ -14,14 +14,18 @@ SOURCES += main.cpp\
         editorwindow.cpp \
     imagewidget.cpp \
     progressdialog.cpp \
-    imageprocessor.cpp
+    imageprocessor.cpp \
+    histogramprocessor.cpp
 
 HEADERS  += editorwindow.h \
     imagewidget.h \
     progressdialog.h \
-    imageprocessor.h
+    imageprocessor.h \
+    histogramprocessor.h
 
 FORMS    +=
+
+
 
 
 

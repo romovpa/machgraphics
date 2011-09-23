@@ -17,7 +17,10 @@ const QImage& ImageWidget::getImage()
 
 QRect ImageWidget::getRect()
 {
-	return rect;
+	if (rect.isValid())
+		return rect;
+	else
+		return image.rect();
 }
 
 float ImageWidget::getScale()

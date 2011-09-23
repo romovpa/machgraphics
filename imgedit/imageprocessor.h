@@ -17,8 +17,9 @@ signals:
 	void processFinished();
 
 protected:
+	virtual void process();
+
 	void run();
-	void process();
 	void progress(double);
 
 	QImage image;

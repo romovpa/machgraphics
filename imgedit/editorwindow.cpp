@@ -1,5 +1,7 @@
 #include "editorwindow.h"
+
 #include "imageprocessor.h"
+#include "histogramprocessor.h"
 
 #include <QtGui>
 
@@ -85,7 +87,12 @@ void EditorWindow::createActions()
 	connect(quitAct, SIGNAL(triggered()), this, SLOT(close()));
 
 	autoContrastAct = new QAction(tr("Auto Contrast"), this);
+	autoContrastAct->setToolTip(tr("Apply luminance histogram stretching"));
 	connect(autoContrastAct, SIGNAL(triggered()), this, SLOT(doAutoContrast()));
+
+	autoLevelsAct = new QAction(tr("Auto Levels"), this);
+	autoLevelsAct->setToolTip(tr("Apply channel-wise RGB histogram stretching"));
+	connect(autoLevelsAct, SIGNAL(triggered()), this, SLOT(doAutoLevels()));
 }
 
 void EditorWindow::updateActions()
@@ -105,11 +112,13 @@ void EditorWindow::createMenus()
 
 	procMenu = new QMenu(tr("&Processing"), this);
 	procMenu->addAction(autoContrastAct);
+	procMenu->addAction(autoLevelsAct);
 	menuBar()->addMenu(procMenu);
 }
 
 bool EditorWindow::runProcessor(ImageProcessor *processor)
 {
+	// TODO: show progress window after 0.5 seconds the processor started
 	connect(processor, SIGNAL(progressChanged(double)), progressDialog, SLOT(setProgress(double)));
 	connect(progressDialog, SIGNAL(cancelRequested()), processor, SLOT(terminate()));
 	connect(processor, SIGNAL(terminated()), progressDialog, SLOT(reject()));
@@ -125,7 +134,18 @@ bool EditorWindow::runProcessor(ImageProcessor *processor)
 
 void EditorWindow::doAutoContrast()
 {
-	ImageProcessor *processor = new ImageProcessor(imageWidget->getImage(), imageWidget->getRect(), this);
+	HistogramProcessor *processor =
+			new HistogramProcessor(imageWidget->getImage(), imageWidget->getRect(), this);
+	processor->setType(HistogramProcessor::LUMA_LINEAR_STRETCH);
+	runProcessor(processor);
+	delete processor;
+}
+
+void EditorWindow::doAutoLevels()
+{
+	HistogramProcessor *processor =
+			new HistogramProcessor(imageWidget->getImage(), imageWidget->getRect(), this);
+	processor->setType(HistogramProcessor::RGB_LINEAR_STRETCH);
 	runProcessor(processor);
 	delete processor;
 }

@@ -21,6 +21,7 @@ private slots:
 	void saveImageAs();
 
 	void doAutoContrast();
+	void doAutoLevels();
 
 private:
 	void createActions();
@@ -41,8 +42,8 @@ private:
 	QAction *quitAct;
 
 	QAction *autoContrastAct; // Linear stretch on L (luma)
-	QAction *rgbStretchAct;   // Linear stretch on RGB
-	QAction *whiteBalanceAct; // White balancing (gray world)
+	QAction *autoLevelsAct;   // Linear stretch on RGB
+	QAction *whiteBalanceAct; // White balancing (grayworld)
 	QAction *filterAct;       // Open filtration dialog
 							   //    support: gauss (separable), sharpeness, median, arbitrary linear
 	QAction *affineAct;       // Open affine transform dialog
