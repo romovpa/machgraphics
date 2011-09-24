@@ -18,6 +18,7 @@ public:
 	int getType();
 	int getKernelSize();
 	double getSigma();
+	int getRadius();
 
 private slots:
 	void changeType(int);

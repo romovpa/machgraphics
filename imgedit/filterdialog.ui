@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>213</width>
-    <height>193</height>
+    <width>214</width>
+    <height>263</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -48,6 +48,11 @@
        </item>
        <item>
         <property name="text">
+         <string>Glass Effect</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
          <string>Convolution (user kernel)</string>
         </property>
        </item>
@@ -75,7 +80,11 @@
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="QSpinBox" name="sizeBox"/>
+       <widget class="QSpinBox" name="sizeBox">
+        <property name="minimum">
+         <number>3</number>
+        </property>
+       </widget>
       </item>
       <item row="1" column="0">
        <widget class="QLabel" name="sigmaLabel">
@@ -85,7 +94,51 @@
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="QDoubleSpinBox" name="sigmaBox"/>
+       <widget class="QDoubleSpinBox" name="sigmaBox">
+        <property name="minimum">
+         <double>0.010000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>100.000000000000000</double>
+        </property>
+        <property name="value">
+         <double>1.000000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="alphaLabel">
+        <property name="text">
+         <string>Alpha:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QDoubleSpinBox" name="alphaBox">
+        <property name="maximum">
+         <double>1.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.050000000000000</double>
+        </property>
+        <property name="value">
+         <double>0.200000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="radiusLabel">
+        <property name="text">
+         <string>Radius:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QSpinBox" name="radiusBox">
+        <property name="minimum">
+         <number>1</number>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>

@@ -10,6 +10,7 @@ FilterDialog::FilterDialog(QWidget *parent) :
     ui(new Ui::FilterDialog)
 {
     ui->setupUi(this);
+	changeType(ui->typeBox->currentIndex());
 }
 
 FilterDialog::~FilterDialog()
@@ -27,6 +28,11 @@ double FilterDialog::getSigma()
 	return ui->sigmaBox->value();
 }
 
+int FilterDialog::getRadius()
+{
+	return ui->radiusBox->value();
+}
+
 int FilterDialog::getType()
 {
 	return ui->typeBox->currentIndex();
@@ -34,20 +40,32 @@ int FilterDialog::getType()
 
 void FilterDialog::changeType(int type)
 {
+	bool sigma = false, alpha = false, size = false, radius = false;
+	bool matrix = false;
 	switch (type) {
-		case FilterProcessor::GAUSSIAN:
 		case FilterProcessor::UNSHARP:
-			ui->sizeBox->setEnabled(true);
-			ui->sigmaBox->setEnabled(true);
+			alpha = true;
+		case FilterProcessor::GAUSSIAN:
+			size = true, sigma = true;
 			break;
 		case FilterProcessor::MEDIAN:
-			ui->sizeBox->setEnabled(true);
-			ui->sigmaBox->setEnabled(false);
+			radius = true;
+			break;
+		case FilterProcessor::GLASS_EFFECT:
+			radius = true;
 		case FilterProcessor::CONVOLUTION:
-			ui->sizeBox->setEnabled(false);
-			ui->sigmaBox->setEnabled(false);
+			matrix = true;
+			break;
 		default:
 			qWarning() << "FilterDialog: invalid filter type";
-
 	}
+
+	ui->sigmaBox->setVisible(sigma);
+	ui->sigmaLabel->setVisible(sigma);
+	ui->alphaBox->setVisible(alpha);
+	ui->alphaLabel->setVisible(alpha);
+	ui->sizeBox->setVisible(size);
+	ui->sizeLabel->setVisible(size);
+	ui->radiusBox->setVisible(radius);
+	ui->radiusLabel->setVisible(radius);
 }

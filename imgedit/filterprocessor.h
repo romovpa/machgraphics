@@ -13,12 +13,15 @@ public:
 		GAUSSIAN = 0,
 		UNSHARP,
 		MEDIAN,
+		GLASS_EFFECT,
 		CONVOLUTION
 	};
 
-	void setType(int type);
-	void setSigma(double sigma);
-	void setKernelSize(int n);
+	void setType(int);
+	void setSigma(double);
+	void setAlpha(double);
+	void setRadius(int);
+	void setKernelSize(int);
 	void setKernel(double *kernel, int n, int m);
 
 protected:
@@ -30,12 +33,17 @@ private:
 	void normalizeKernel(double *kernel, int n);
 	void gaussKernel1D(double *kernel, int n, double sigma);
 	void gaussKernel2D(double *kernel, int n, double sigma);
-	void unsharpKernel(double *kernel, int n, double sigma);
+	void unsharpKernel(double *kernel, int n, double sigma, double alpha);
+	void median();
+	void glass();
 
+	int collectNeighbors(int, int, int, quint8 *, quint8 *, quint8 *);
+	int findMedian(quint8 *arr, int n);
+	int makePartition(quint8 *arr, int l, int r);
 
 	int type;
-	double sigma;
-	int kerSize;
+	double sigma, alpha;
+	int kerSize, radius;
 	double *userKer;
 	int kerN, kerM;
 };

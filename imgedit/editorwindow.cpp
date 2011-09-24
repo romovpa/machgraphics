@@ -107,7 +107,7 @@ void EditorWindow::createActions()
 	geometryAct->setToolTip(tr("Scale and rotate image relative to the center"));
 	connect(geometryAct, SIGNAL(triggered()), this, SLOT(doGeometryTransform()));
 
-	filterAct = new QAction(tr("Filter..."), this);
+	filterAct = new QAction(tr("Filters && Effects"), this);
 	filterAct->setToolTip(tr("Open filtration dialog"));
 	connect(filterAct, SIGNAL(triggered()), this, SLOT(doFilter()));
 }
@@ -201,6 +201,7 @@ void EditorWindow::doFilter()
 		processor.setType(dlg.getType());
 		processor.setKernelSize(dlg.getKernelSize());
 		processor.setSigma(dlg.getSigma());
+		processor.setRadius(dlg.getRadius());
 		runProcessor(processor);
 	}
 }
