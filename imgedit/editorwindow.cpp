@@ -92,6 +92,18 @@ void EditorWindow::createActions()
 	quitAct->setShortcut(QKeySequence::Quit);
 	connect(quitAct, SIGNAL(triggered()), this, SLOT(close()));
 
+	zoomInAct = new QAction(tr("Zoom In"), this);
+	zoomInAct->setShortcut(QKeySequence::ZoomIn);
+	connect(zoomInAct, SIGNAL(triggered()), imageWidget, SLOT(zoomIn()));
+
+	zoomOutAct = new QAction(tr("Zoom Out"), this);
+	zoomOutAct->setShortcut(QKeySequence::ZoomOut);
+	connect(zoomOutAct, SIGNAL(triggered()), imageWidget, SLOT(zoomOut()));
+	connect(imageWidget, SIGNAL(zoomOutAvailableChanged(bool)), zoomOutAct, SLOT(setEnabled(bool)));
+
+	zoomOriginalAct = new QAction(tr("Actual Size"), this);
+	connect(zoomOriginalAct, SIGNAL(triggered()), imageWidget, SLOT(zoomOriginal()));
+
 	autoContrastAct = new QAction(tr("Auto Contrast"), this);
 	autoContrastAct->setToolTip(tr("Apply luminance histogram stretching"));
 	connect(autoContrastAct, SIGNAL(triggered()), this, SLOT(doAutoContrast()));
@@ -126,6 +138,9 @@ void EditorWindow::updateActions()
 	geometryAct->setEnabled(hasImg);
 	filterAct->setEnabled(hasImg);
 	convolutionAct->setEnabled(hasImg);
+	zoomInAct->setEnabled(hasImg);
+	zoomOutAct->setEnabled(hasImg);
+	zoomOriginalAct->setEnabled(hasImg);
 }
 
 void EditorWindow::createMenus()
@@ -137,6 +152,12 @@ void EditorWindow::createMenus()
 	fileMenu->addSeparator();
 	fileMenu->addAction(quitAct);
 	menuBar()->addMenu(fileMenu);
+
+	viewMenu = new QMenu(tr("&View"), this);
+	viewMenu->addAction(zoomInAct);
+	viewMenu->addAction(zoomOutAct);
+	viewMenu->addAction(zoomOriginalAct);
+	menuBar()->addMenu(viewMenu);
 
 	procMenu = new QMenu(tr("&Processing"), this);
 	procMenu->addAction(autoContrastAct);

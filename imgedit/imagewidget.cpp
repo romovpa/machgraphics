@@ -45,6 +45,25 @@ void ImageWidget::setScale(float scale)
 {
 	scaleFactor = scale;
 	currentStepScaleFactor = 1;
+	updateSize();
+	update();
+	emit zoomOutAvailableChanged(scaleFactor - ZOOM_SCALE_STEP > ZOOM_MIN_SCALE);
+}
+
+void ImageWidget::zoomIn()
+{
+	setScale(getScale() + ZOOM_SCALE_STEP);
+}
+
+void ImageWidget::zoomOut()
+{
+	if (getScale() - ZOOM_SCALE_STEP > ZOOM_MIN_SCALE)
+		setScale(getScale() - ZOOM_SCALE_STEP);
+}
+
+void ImageWidget::zoomOriginal()
+{
+	setScale(1);
 }
 
 void ImageWidget::updateSize()

@@ -13,12 +13,19 @@ public:
 	float getScale();
 	QRect getRect();
 
+	static const double ZOOM_SCALE_STEP = 0.2;
+	static const double ZOOM_MIN_SCALE = 0.1;
+
 signals:
 	void scaleChanged(float);
+	void zoomOutAvailableChanged(bool);
 
 public slots:
 	void setImage(const QImage &);
 	void setScale(float);
+	void zoomIn();
+	void zoomOut();
+	void zoomOriginal();
 
 protected:
 	bool event(QEvent *);

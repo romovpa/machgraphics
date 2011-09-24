@@ -45,6 +45,10 @@ private:
 	QAction *saveAsAct;
 	QAction *quitAct;
 
+	QAction *zoomInAct;
+	QAction *zoomOutAct;
+	QAction *zoomOriginalAct;
+
 	QAction *autoContrastAct; // Linear stretch on L (luma)
 	QAction *autoLevelsAct;   // Linear stretch on RGB
 	QAction *whiteBalanceAct; // White balancing (grayworld)
@@ -53,8 +57,8 @@ private:
 	QAction *convolutionAct;  // Convolution with arbitrary kernel
 	QAction *geometryAct;     // Open geometry transform dialog
 
-
 	QMenu *fileMenu;
+	QMenu *viewMenu;
 	QMenu *procMenu;
 };
 
