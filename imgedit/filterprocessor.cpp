@@ -240,7 +240,9 @@ void FilterProcessor::process()
 			break;
 
 		case CONVOLUTION:
+			writeKernel(userKer, kerN, kerM, "user.txt");
 			convolve(userKer, kerN, kerM);
+			break;
 
 		default:
 			qWarning() << "FilterProcessor: invalid filter type";

@@ -25,6 +25,7 @@ private slots:
 	void doWhiteBalance();
 	void doGeometryTransform();
 	void doFilter();
+	void doConvolution();
 
 private:
 	void createActions();
@@ -49,9 +50,9 @@ private:
 	QAction *whiteBalanceAct; // White balancing (grayworld)
 	QAction *filterAct;       // Open filtration dialog
 							   //    support: gauss (separable), sharpeness, median, arbitrary linear
+	QAction *convolutionAct;  // Convolution with arbitrary kernel
 	QAction *geometryAct;     // Open geometry transform dialog
-	QAction *wavesAct;        // Waves effect
-	QAction *glassAct;        // Glass effect
+
 
 	QMenu *fileMenu;
 	QMenu *procMenu;

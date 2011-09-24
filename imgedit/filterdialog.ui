@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>214</width>
+    <width>212</width>
     <height>263</height>
    </rect>
   </property>
@@ -51,11 +51,6 @@
          <string>Glass Effect</string>
         </property>
        </item>
-       <item>
-        <property name="text">
-         <string>Convolution (user kernel)</string>
-        </property>
-       </item>
       </widget>
      </item>
     </layout>
@@ -63,7 +58,7 @@
    <item>
     <widget class="QGroupBox" name="kernelSettings">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+      <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
@@ -164,8 +159,8 @@
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>206</x>
-     <y>171</y>
+     <x>205</x>
+     <y>241</y>
     </hint>
     <hint type="destinationlabel">
      <x>157</x>
@@ -180,11 +175,11 @@
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>206</x>
-     <y>177</y>
+     <x>205</x>
+     <y>247</y>
     </hint>
     <hint type="destinationlabel">
-     <x>212</x>
+     <x>211</x>
      <y>192</y>
     </hint>
    </hints>
@@ -200,7 +195,7 @@
      <y>27</y>
     </hint>
     <hint type="destinationlabel">
-     <x>212</x>
+     <x>211</x>
      <y>25</y>
     </hint>
    </hints>

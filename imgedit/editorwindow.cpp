@@ -1,6 +1,7 @@
 #include "editorwindow.h"
 #include "geometrydialog.h"
 #include "filterdialog.h"
+#include "kerneldialog.h"
 
 #include "imageprocessor.h"
 #include "histogramprocessor.h"
@@ -110,6 +111,10 @@ void EditorWindow::createActions()
 	filterAct = new QAction(tr("Filters && Effects"), this);
 	filterAct->setToolTip(tr("Open filtration dialog"));
 	connect(filterAct, SIGNAL(triggered()), this, SLOT(doFilter()));
+
+	convolutionAct = new QAction(tr("Convolution"), this);
+	convolutionAct->setToolTip(tr("Apply convolution with arbitrary kernel"));
+	connect(convolutionAct, SIGNAL(triggered()), this, SLOT(doConvolution()));
 }
 
 void EditorWindow::updateActions()
@@ -119,6 +124,8 @@ void EditorWindow::updateActions()
 	autoLevelsAct->setEnabled(hasImg);
 	whiteBalanceAct->setEnabled(hasImg);
 	geometryAct->setEnabled(hasImg);
+	filterAct->setEnabled(hasImg);
+	convolutionAct->setEnabled(hasImg);
 }
 
 void EditorWindow::createMenus()
@@ -138,6 +145,7 @@ void EditorWindow::createMenus()
 	procMenu->addSeparator();
 	procMenu->addAction(geometryAct);
 	procMenu->addAction(filterAct);
+	procMenu->addAction(convolutionAct);
 	menuBar()->addMenu(procMenu);
 }
 
@@ -202,6 +210,18 @@ void EditorWindow::doFilter()
 		processor.setKernelSize(dlg.getKernelSize());
 		processor.setSigma(dlg.getSigma());
 		processor.setRadius(dlg.getRadius());
+		runProcessor(processor);
+	}
+}
+
+void EditorWindow::doConvolution()
+{
+	KernelDialog dlg;
+	int res = dlg.exec();
+	if (res == QDialog::Accepted) {
+		FilterProcessor processor(imageWidget->getImage(), imageWidget->getRect(), this);
+		processor.setType(FilterProcessor::CONVOLUTION);
+		processor.setKernel(dlg.getKernel(), dlg.getKernelRows(), dlg.getKernelCols());
 		runProcessor(processor);
 	}
 }
