@@ -48,6 +48,7 @@ private:
 	QAction *zoomInAct;
 	QAction *zoomOutAct;
 	QAction *zoomOriginalAct;
+	QAction *zoomByWheelAct;
 
 	QAction *autoContrastAct; // Linear stretch on L (luma)
 	QAction *autoLevelsAct;   // Linear stretch on RGB

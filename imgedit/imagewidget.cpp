@@ -5,7 +5,8 @@
 ImageWidget::ImageWidget(QWidget *parent) :
 	QWidget(parent),
 	currentStepScaleFactor(1),
-	scaleFactor(1)
+	scaleFactor(1),
+	wheelZoom(false)
 {
 	grabGesture(Qt::PinchGesture);
 }
@@ -48,6 +49,11 @@ void ImageWidget::setScale(float scale)
 	updateSize();
 	update();
 	emit zoomOutAvailableChanged(scaleFactor - ZOOM_SCALE_STEP > ZOOM_MIN_SCALE);
+}
+
+void ImageWidget::setWheelZoom(bool value)
+{
+	this->wheelZoom = value;
 }
 
 void ImageWidget::zoomIn()
@@ -97,6 +103,19 @@ void ImageWidget::paintEvent(QPaintEvent *)
 			p.drawRect(rect.left(), rect.top(), rect.width()-1, rect.height()-1);
 		}
 	}
+}
+
+void ImageWidget::wheelEvent(QWheelEvent *event)
+{
+	if (wheelZoom) {
+		float scale = getScale();
+		scale += event->delta() * ZOOM_SCALE_WHEEL_STEP;
+		if (scale <	ZOOM_MIN_SCALE)
+			scale = ZOOM_MIN_SCALE;
+		setScale(scale);
+	}
+	else
+		QWidget::wheelEvent(event);
 }
 
 void ImageWidget::mousePressEvent(QMouseEvent *event)

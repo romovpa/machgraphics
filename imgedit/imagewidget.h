@@ -14,6 +14,7 @@ public:
 	QRect getRect();
 
 	static const double ZOOM_SCALE_STEP = 0.2;
+	static const double ZOOM_SCALE_WHEEL_STEP = 0.05;
 	static const double ZOOM_MIN_SCALE = 0.1;
 
 signals:
@@ -23,6 +24,7 @@ signals:
 public slots:
 	void setImage(const QImage &);
 	void setScale(float);
+	void setWheelZoom(bool);
 	void zoomIn();
 	void zoomOut();
 	void zoomOriginal();
@@ -33,6 +35,7 @@ protected:
 	void mousePressEvent(QMouseEvent *);
 	void mouseMoveEvent(QMouseEvent *);
 	void mouseReleaseEvent(QMouseEvent *);
+	void wheelEvent(QWheelEvent *);
 
 private:
 	void updateSize();
@@ -45,6 +48,7 @@ private:
 
 	float scaleFactor;
 	float currentStepScaleFactor;
+	bool wheelZoom;
 
 	bool selectingRect;
 	QPoint selectingPoint;

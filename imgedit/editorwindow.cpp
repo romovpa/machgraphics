@@ -104,6 +104,11 @@ void EditorWindow::createActions()
 	zoomOriginalAct = new QAction(tr("Actual Size"), this);
 	connect(zoomOriginalAct, SIGNAL(triggered()), imageWidget, SLOT(zoomOriginal()));
 
+	zoomByWheelAct = new QAction(tr("Zoom by Mouse Wheel"), this);
+	zoomByWheelAct->setCheckable(true);
+	zoomByWheelAct->setChecked(false);
+	connect(zoomByWheelAct, SIGNAL(toggled(bool)), imageWidget, SLOT(setWheelZoom(bool)));
+
 	autoContrastAct = new QAction(tr("Auto Contrast"), this);
 	autoContrastAct->setToolTip(tr("Apply luminance histogram stretching"));
 	connect(autoContrastAct, SIGNAL(triggered()), this, SLOT(doAutoContrast()));
@@ -157,6 +162,8 @@ void EditorWindow::createMenus()
 	viewMenu->addAction(zoomInAct);
 	viewMenu->addAction(zoomOutAct);
 	viewMenu->addAction(zoomOriginalAct);
+	viewMenu->addSeparator();
+	viewMenu->addAction(zoomByWheelAct);
 	menuBar()->addMenu(viewMenu);
 
 	procMenu = new QMenu(tr("&Processing"), this);
