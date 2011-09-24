@@ -91,8 +91,8 @@ void GeometryProcessor::process()
 			double x1 = x0 + 1/scale * (cos(theta)*(x-x0)   + sin(theta)*(y-y0));
 			double y1 = y0 + 1/scale * (- sin(theta)*(x-x0) + cos(theta)*(y-y0));
 
-			if (x1/dx >= rect.left() && x1/dx < rect.right()+1 &&
-					y1/dy >= rect.top() && y1/dy < rect.bottom()+1) {
+			if (x1/dx >= rect.left() && x1/dx < rect.right() &&
+					y1/dy >= rect.top() && y1/dy < rect.bottom()) {
 				// point from rotated rectangle
 				// interpolate them, using bilinear interpolation
 				int j2 = (int)(x1/dx);
