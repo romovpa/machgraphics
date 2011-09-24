@@ -43,6 +43,17 @@ void FilterProcessor::setKernel(double *kernel, int n, int m)
 	this->kerM = m;
 }
 
+void writeKernel(double *ker, int n, int m, const char *filename)
+{
+	FILE *out = fopen(filename, "wt");
+	for (int i = 0; i < n; ++i) {
+		for (int j = 0; j < m; ++j)
+			fprintf(out, "%lf ", ker[i*m+j]);
+		fprintf(out, "\n");
+	}
+	fclose(out);
+}
+
 void FilterProcessor::convolve(double *kernel, int n, int m)
 {
 	int nh = n/2, mh = m/2;
@@ -83,7 +94,7 @@ void FilterProcessor::normalizeKernel(double *kernel, int n)
 void FilterProcessor::gaussKernel1D(double *kernel, int n, double sigma)
 {
 	for (int i = 0; i < n; i++) {
-		double x = (double)i - (n+1)/2;
+		double x = (double)i - n/2;
 		kernel[i] = exp(-x*x/(2*sigma*sigma));
 	}
 	normalizeKernel(kernel, n);
@@ -100,23 +111,12 @@ void FilterProcessor::gaussKernel2D(double *kernel, int n, double sigma)
 	normalizeKernel(kernel, n*n);
 }
 
-void writeKernel(double *ker, int n, int m, const char *filename)
-{
-	FILE *out = fopen(filename, "wt");
-	for (int i = 0; i < n; ++i) {
-		for (int j = 0; j < n; ++j)
-			fprintf(out, "%lf ", ker[i*m+j]);
-		fprintf(out, "\n");
-	}
-	fclose(out);
-}
-
 void FilterProcessor::unsharpKernel(double *kernel, int n, double sigma, double alpha)
 {
 	gaussKernel2D(kernel, n, sigma);
 	for (int i = 0; i < n*n; ++i)
 		kernel[i] *= -alpha;
-	int c = (n+1)/2;
+	int c = n/2;
 	kernel[c*n+c] += 1+alpha;
 	normalizeKernel(kernel, n*n);
 }
