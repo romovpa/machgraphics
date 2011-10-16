@@ -19,7 +19,7 @@ public:
 	int getKernelRows();
 	int getKernelCols();
 
-public slots:
+private slots:
 	void changeMatrixSize();
 	void changeNormalizeFactor();
 	void updateMatrix();
