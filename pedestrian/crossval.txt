@@ -1,0 +1,49 @@
+$ ./pedestrian train --bootstrap 2 --crossval 3
+Loading train set from 'train/'
+Reading annotation: 'train/train-processed.idl' (250 positives)
+Extracting objects: 250
+Model selection:
+Objects: 1500
+Features: 2000
+C=0.000100: 1313/1500 correctly classified
+C=0.001000: 1497/1500 correctly classified
+C=0.010000: 1498/1500 correctly classified
+C=0.100000: 1499/1500 correctly classified
+C=1.000000: 1499/1500 correctly classified
+C=10.000000: 1498/1500 correctly classified
+C=100.000000: 1499/1500 correctly classified
+C=1000.000000: 1498/1500 correctly classified
+C=10000.000000: 1499/1500 correctly classified
+Best C=0.100000
+Bootstrap training set #0
+New objects added: 7
+Learning again...
+Model selection:
+Objects: 1507
+Features: 2000
+C=0.000100: 1308/1507 correctly classified
+C=0.001000: 1491/1507 correctly classified
+C=0.010000: 1498/1507 correctly classified
+C=0.100000: 1498/1507 correctly classified
+C=1.000000: 1501/1507 correctly classified
+C=10.000000: 1498/1507 correctly classified
+C=100.000000: 1499/1507 correctly classified
+C=1000.000000: 1497/1507 correctly classified
+C=10000.000000: 1497/1507 correctly classified
+Best C=1.000000
+Bootstrap training set #1
+New objects added: 7
+Learning again...
+Model selection:
+Objects: 1514
+Features: 2000
+C=0.000100: 1322/1514 correctly classified
+C=0.001000: 1506/1514 correctly classified
+C=0.010000: 1123/1514 correctly classified
+C=0.100000: 1498/1514 correctly classified
+C=1.000000: 1511/1514 correctly classified
+C=10.000000: 1513/1514 correctly classified
+C=100.000000: 1498/1514 correctly classified
+C=1000.000000: 1497/1514 correctly classified
+C=10000.000000: 1497/1514 correctly classified
+Best C=10.000000
