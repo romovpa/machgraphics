@@ -21,13 +21,21 @@ template <class S, class T> static inline void clone(T*& dst, S* src, int n)
 #define Malloc(type,n) (type *)malloc((n)*sizeof(type))
 #define INF HUGE_VAL
 
+FILE *logfile;
+
 static void print_string_stdout(const char *s)
 {
 	fputs(s,stdout);
 	fflush(stdout);
 }
 
-static void (*liblinear_print_string) (const char *) = &print_string_stdout;
+static void print_string_log(const char *s)
+{
+	fputs(s,logfile);
+	fflush(logfile);
+}
+
+static void (*liblinear_print_string) (const char *) = &print_string_log;
 
 #if 1
 static void info(const char *fmt,...)
@@ -1895,6 +1903,8 @@ static void train_one(const problem *prob, const parameter *param, double *w, do
 //
 model* train(const problem *prob, const parameter *param)
 {
+	logfile = fopen("liblinear.log", "at");
+
 	int i,j;
 	int l = prob->l;
 	int n = prob->n;
@@ -2012,6 +2022,9 @@ model* train(const problem *prob, const parameter *param)
 	free(sub_prob.x);
 	free(sub_prob.y);
 	free(weighted_C);
+
+	fclose(logfile);
+
 	return model_;
 }
 
